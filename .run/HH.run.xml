@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="HH" type="CompoundRunConfigurationType">
+    <toRun name="HH frontend" type="js.build_tools.npm" />
+    <toRun name="HH backend" type="PythonConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
