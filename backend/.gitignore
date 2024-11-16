@@ -1,2 +1,3 @@
 __pycache__/
-*.pyc
+*.py[cod]
+# *.py[cod] is equivalent to listing all of these: *.pyc *.pyo *.pyd
