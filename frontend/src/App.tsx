@@ -34,6 +34,8 @@ const App: React.FC = () => {
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
+  const maxLetters = 26; // maximum number of letters allowed
+  const reachedMaxLetters = letterCounts.length >= maxLetters;
 
   useEffect(() => {
     axios
@@ -150,9 +152,18 @@ const App: React.FC = () => {
           </div>
         ))}
         <div>
-          <button onClick={handleAddLetter} className="button">
+          <button
+            onClick={handleAddLetter}
+            className="button"
+            disabled={reachedMaxLetters}
+          >
             Add letter
           </button>
+          {reachedMaxLetters && (
+            <span style={{ color: "gray", fontSize: 12, marginLeft: 8 }}>
+              {`You have reached the maximum allowed number of letters (${maxLetters}).`}
+            </span>
+          )}
         </div>
       </div>
       <div>
