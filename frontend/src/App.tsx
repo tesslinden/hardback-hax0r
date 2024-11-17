@@ -6,13 +6,23 @@ import './App.css';
 const App: React.FC = () => {
     // ^ React.FC is a type (React Functional Component).
     //  () means the component doesn't take any props (parameters).
+
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+  const makeRandomLetterCount = () => {
+    return {
+      guid: uuidv4(),
+      letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+      count: 1
+    };
+  }
+
   const [serverResponse, setServerResponse] = useState<string>('');
   const [queryDisplay, setQueryDisplay] = useState<string>('');
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
-  const [letterCounts, setLetterCounts] = useState<{ guid: string; letter: string; count: number | null }[]>([]);
+  const [letterCounts, setLetterCounts] = useState<{ guid: string; letter: string; count: number | null }[]>([makeRandomLetterCount()]);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/') // send a GET (read-only) request to the server (backend)
@@ -28,11 +38,9 @@ const App: React.FC = () => {
 
 
   const handleAddLetter = () => {
-    setLetterCounts([...letterCounts, {
-        guid: uuidv4(),
-        letter: alphabet[Math.floor(Math.random() * alphabet.length)],
-        count: 1
-    }]);
+    setLetterCounts(
+        [...letterCounts, makeRandomLetterCount()]
+    );
   };
 
   const handleRemoveLetter = (guid: string) => {
