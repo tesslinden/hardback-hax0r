@@ -5,25 +5,46 @@ const App: React.FC = () => {
     // ^ React.FC is a type (React Functional Component).
     //  () means the component doesn't take any props (parameters).
 
-  const [data, setData] = useState<string>('');
-  // ^ creates a state variable `data` and a function `setData` to update it. initializes it as an empty string.
+  const [serverResponse, setServerResponse] = useState<string>('');
+  // ^ creates a state variable `serverResponse` and a function `setServerResponse` to update it.
+    // initializes it as an empty string.
 
-  const [inputValue, setInputValue] = useState<string>('');
-  const [result, setResult] = useState<number | null>(null);
+  const [inputX, setInputX] = useState<string>('');
+  const [additionResult, setAdditionResult] = useState<number | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  // searchResults will be a list of strings (or null if no results)
+  const [searchResults, setSearchResults] = useState<string[] | null>(null);
+  const [minLength, setMinLength] = useState<string>('0');
+
+  const handleInputXChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputX(e.target.value);
     console.log('Input value:', e.target.value);
   };
   const handleCompute = () => {
     axios
-      .post('http://127.0.0.1:5000/compute', { x: inputValue }) // send a POST request to the server (backend)
+      .post('http://127.0.0.1:5000/compute', { x: inputX }) // send a POST request to the server (backend)
       .then(response => {
-        setResult(response.data.result);
+        setAdditionResult(response.data.result);
       })
       .catch(error => {
         console.error('Received error from server:', error);
-        alert('Please enter a valid number.');
+        alert('Please enter a valid number');
+      });
+  };
+
+  const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMinLength(e.target.value);//parseInt(e.target.value));
+    console.log('Min length:', e.target.value);
+  }
+  const handleSearch = () => {
+    axios
+      .post('http://127.0.0.1:5000/search', { min_length: minLength }) // send a POST request to the server (backend)
+      .then(response => {
+        setSearchResults(response.data.result);
+      })
+      .catch(error => {
+        console.error('Received error from server:', error);
+        alert('Received error from server. See console.');
       });
   };
 
@@ -31,26 +52,41 @@ const App: React.FC = () => {
     axios.get('http://127.0.0.1:5000/') // send a GET (read-only) request to the server (backend)
       .then(response => {
         console.log('Success:', response.data); // response.data = 'Hello, World!'
-        setData(response.data);
+        setServerResponse(response.data);
       })
       .catch(error => {
         console.error('There was an error!', error);
-        setData('Error loading data');
+        setServerResponse('Server is not responding');
       });
   }, []);
 
   return (
     <div>
-      <h1>My React App</h1>
-      <p>{data}</p> {/* display response.data (Hello, World!) */}
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleChange}
-        placeholder="Enter a number"
-      />
-      <button onClick={handleCompute}>Compute x + 1</button>
-      {result !== null && <p>Result: {result}</p>}
+      <h1>Hardback Hax0r</h1>
+      <p>{serverResponse}</p>
+        <div>
+          <h4>Min length:</h4>
+            <input
+            type="text"
+            value={minLength}
+            onChange={handleMinLengthChange}
+            placeholder="Enter min length"
+        />
+            <button onClick={handleSearch}>Search</button>
+          {searchResults !== null && <p>Search results: {searchResults}</p>}
+        </div>
+        <div>
+          <h4>Random other button:</h4>
+            <input
+            type="text"
+            value={inputX}
+            onChange={handleInputXChange}
+            placeholder="Enter a number"
+        />
+            <button onClick={handleCompute}>Compute x + 1</button>
+          {additionResult !== null && <p>Addition result: {additionResult}</p>}
+        </div>
+
     </div>
   );
 
