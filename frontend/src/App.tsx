@@ -35,7 +35,10 @@ const App: React.FC = () => {
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
   const [errorMessageDuplicateLetters, setErrorMessageDuplicateLetters] =
-    useState<string>(""); // For duplicate letter error message
+    useState<string>("");
+  const [errorMessageInvalidLetters, setErrorMessageInvalidLetters] =
+    useState<string>("");
+
   const maxLetters = 26; // maximum number of letters allowed
   const reachedMaxLetters = letterCounts.length >= maxLetters;
   const filteredLetterCounts = letterCounts.filter(
@@ -44,12 +47,22 @@ const App: React.FC = () => {
   const duplicateLettersFound = letterCounts.some(
     (lc) => letterCounts.filter((lc2) => lc2.letter === lc.letter).length > 1,
   );
+  const invalidLettersFound = letterCounts.some(
+    (lc) => !alphabet.includes(lc.letter.toLowerCase()),
+  );
 
   useEffect(() => {
     if (duplicateLettersFound) {
       setErrorMessageDuplicateLetters("Duplicate letters are not allowed.");
     } else {
       setErrorMessageDuplicateLetters("");
+    }
+    if (invalidLettersFound) {
+      setErrorMessageInvalidLetters(
+        "Invalid letter(s): each letter must be a single alphabetic character.",
+      );
+    } else {
+      setErrorMessageInvalidLetters("");
     }
   }, [letterCounts, duplicateLettersFound]);
 
@@ -134,6 +147,7 @@ const App: React.FC = () => {
   };
 
   console.log("letterCounts: ", letterCounts);
+  console.log("invalidLettersFound: ", invalidLettersFound);
 
   return (
     <div>
@@ -144,6 +158,11 @@ const App: React.FC = () => {
         {errorMessageDuplicateLetters && (
           <p style={{ color: "red", fontSize: 12 }}>
             {errorMessageDuplicateLetters}
+          </p>
+        )}
+        {errorMessageInvalidLetters && (
+          <p style={{ color: "red", fontSize: 12 }}>
+            {errorMessageInvalidLetters}
           </p>
         )}
         {letterCounts.map((lc) => (
@@ -212,7 +231,7 @@ const App: React.FC = () => {
         <button
           onClick={handleSearch}
           className="button searchbutton"
-          disabled={duplicateLettersFound}
+          disabled={duplicateLettersFound || invalidLettersFound}
         >
           Search
         </button>

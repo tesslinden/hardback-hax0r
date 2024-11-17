@@ -1,7 +1,6 @@
 # hardback-hax0r
 
 ## TODOs
-* error message for invalid letter entry
 * split webpage into 3 columns: letter counts; min length and max length inputs; search results
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file
