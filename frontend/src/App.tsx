@@ -9,10 +9,19 @@ const App: React.FC = () => {
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-  const makeRandomLetterCount = () => {
+  const makeRandomLetterCount = (
+    letterCounts: { guid: string; letter: string; count: number | null }[],
+  ) => {
+    let unusedLetters: string[] = alphabet.split("");
+    //  if letterCounts is not empty, check which letters are already in use and remove them from unusedLetters
+    if (letterCounts) {
+      unusedLetters = unusedLetters.filter(
+        (letter) => !letterCounts.some((lc) => lc.letter === letter),
+      );
+    }
     return {
       guid: uuidv4(),
-      letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+      letter: unusedLetters[Math.floor(Math.random() * unusedLetters.length)],
       count: 1,
     };
   };
@@ -24,7 +33,7 @@ const App: React.FC = () => {
   const [maxLength, setMaxLength] = useState<number | null>(null);
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
-  >([makeRandomLetterCount()]);
+  >([makeRandomLetterCount([])]);
 
   useEffect(() => {
     axios
@@ -40,7 +49,7 @@ const App: React.FC = () => {
   }, []);
 
   const handleAddLetter = () => {
-    setLetterCounts([...letterCounts, makeRandomLetterCount()]);
+    setLetterCounts([...letterCounts, makeRandomLetterCount(letterCounts)]);
   };
 
   const handleRemoveLetter = (guid: string) => {
@@ -130,12 +139,14 @@ const App: React.FC = () => {
               onChange={(e) => handleCountChange(lc.guid, e.target.value)}
               placeholder="Enter a number"
             />
-            <button
-              onClick={() => handleRemoveLetter(lc.guid)}
-              className="button"
-            >
-              Remove
-            </button>
+            {letterCounts.length > 1 && (
+              <button
+                onClick={() => handleRemoveLetter(lc.guid)}
+                className="button"
+              >
+                Remove
+              </button>
+            )}
           </div>
         ))}
         <div>
