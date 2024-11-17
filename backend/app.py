@@ -99,9 +99,9 @@ def validate_letter_counts_list(
 
 
 @app.route("/")
-def hello() -> str:
+def server_message() -> str:
     idx = random.randint(0, len(WORDS) - 1)
-    return f"Server is running. Word #{idx} is: {WORDS[idx]}"
+    return f"Server is running. Word #{idx:,} is: {WORDS[idx]}"
 
 
 @app.route("/search", methods=["POST"])

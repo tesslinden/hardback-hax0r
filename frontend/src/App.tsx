@@ -219,10 +219,20 @@ const App: React.FC = () => {
       </div>
       {searchResults !== null && (
         <div>
-          <h4>Results: {searchResults.length}</h4>
-          <p>Query: {queryDisplay}</p>
+          <p>
+            <b>Query:</b> {queryDisplay}
+          </p>
+          <p>
+            <b>Results: </b>
+            {
+              searchResults.length.toLocaleString() // toLocaleString() adds commas: 25,005 instead of 25005
+            }
+          </p>
           <ul style={{ listStyleType: "none", padding: 0 }}>
-            {searchResults?.map((word, index) => <li key={index}>{word}</li>)}
+            {searchResults.length > 0 && <b>Matching words: </b>}
+            <p>
+              {searchResults?.map((word, index) => <li key={index}>{word}</li>)}
+            </p>
           </ul>
         </div>
       )}
