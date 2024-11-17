@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        files: "^backend"
+        args: [ --line-length, "120" ]
+        language_version: python3.9
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        files: "^backend"
+        args:
+            - --line-length=120
+            - --profile=black
+            - --src=backend
+            - --known-first-party=backend
+        language_version: python3.9
+  - repo: https://github.com/hadialqattan/pycln
+    rev: v2.1.1
+    hooks:
+      - id: pycln
+        files: "^backend"
+        args: [ --all ]
+        language_version: python3.9
