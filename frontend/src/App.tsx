@@ -34,8 +34,12 @@ const App: React.FC = () => {
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
+  const [errorMessage, setErrorMessage] = useState<string>(""); // For duplicate letter error message
   const maxLetters = 26; // maximum number of letters allowed
   const reachedMaxLetters = letterCounts.length >= maxLetters;
+  const filteredLetterCounts = letterCounts.filter(
+    (lc) => lc.letter !== "" && lc.count != null,
+  );
 
   useEffect(() => {
     axios
@@ -60,10 +64,15 @@ const App: React.FC = () => {
   };
 
   const handleLetterChange = (guid: string, value: string) => {
-    const newLetterCounts = [...letterCounts]; // create shallow copy of the array
-    const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
-    newLetterCounts[index].letter = value;
-    setLetterCounts(newLetterCounts);
+    const isDuplicate = letterCounts.some((lc) => lc.letter === value);
+    if (isDuplicate) {
+      setErrorMessage("Duplicate letters are not allowed."); // Set error message
+    } else {
+      const newLetterCounts = [...letterCounts]; // create shallow copy of the array
+      const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
+      newLetterCounts[index].letter = value;
+      setLetterCounts(newLetterCounts);
+    }
   };
 
   const handleCountChange = (guid: string, value: string) => {
@@ -88,7 +97,7 @@ const App: React.FC = () => {
       .post("http://127.0.0.1:5000/search", {
         min_length: minLength,
         max_length: maxLength,
-        letter_counts: letterCounts,
+        letter_counts: filteredLetterCounts,
       }) // send a POST request to the server (backend)
       .then((response) => {
         setSearchResults(response.data.result);
@@ -109,7 +118,7 @@ const App: React.FC = () => {
       query += `Max length: ${maxLength}; `;
     }
     if (letterCounts.length > 0) {
-      const counts = letterCounts
+      const counts = filteredLetterCounts
         .map((lc) => `${lc.letter}: ${lc.count}`)
         .join(", ");
       query += `Letter counts: (${counts})`;
@@ -125,6 +134,9 @@ const App: React.FC = () => {
       <p>{serverResponse}</p>
       <div>
         <h4>Letters to include and their minimum counts:</h4>
+        {errorMessage && (
+          <p style={{ color: "red", fontSize: 12 }}>{errorMessage}</p>
+        )}
         {letterCounts.map((lc) => (
           <div key={lc.guid}>
             <input
