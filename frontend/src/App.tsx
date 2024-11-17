@@ -34,12 +34,24 @@ const App: React.FC = () => {
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
-  const [errorMessage, setErrorMessage] = useState<string>(""); // For duplicate letter error message
+  const [errorMessageDuplicateLetters, setErrorMessageDuplicateLetters] =
+    useState<string>(""); // For duplicate letter error message
   const maxLetters = 26; // maximum number of letters allowed
   const reachedMaxLetters = letterCounts.length >= maxLetters;
   const filteredLetterCounts = letterCounts.filter(
     (lc) => lc.letter !== "" && lc.count != null,
   );
+  const duplicateLettersFound = letterCounts.some(
+    (lc) => letterCounts.filter((lc2) => lc2.letter === lc.letter).length > 1,
+  );
+
+  useEffect(() => {
+    if (duplicateLettersFound) {
+      setErrorMessageDuplicateLetters("Duplicate letters are not allowed.");
+    } else {
+      setErrorMessageDuplicateLetters("");
+    }
+  }, [letterCounts, duplicateLettersFound]);
 
   useEffect(() => {
     axios
@@ -64,15 +76,10 @@ const App: React.FC = () => {
   };
 
   const handleLetterChange = (guid: string, value: string) => {
-    const isDuplicate = letterCounts.some((lc) => lc.letter === value);
-    if (isDuplicate) {
-      setErrorMessage("Duplicate letters are not allowed."); // Set error message
-    } else {
-      const newLetterCounts = [...letterCounts]; // create shallow copy of the array
-      const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
-      newLetterCounts[index].letter = value;
-      setLetterCounts(newLetterCounts);
-    }
+    const newLetterCounts = [...letterCounts]; // create shallow copy of the array
+    const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
+    newLetterCounts[index].letter = value;
+    setLetterCounts(newLetterCounts);
   };
 
   const handleCountChange = (guid: string, value: string) => {
@@ -134,8 +141,10 @@ const App: React.FC = () => {
       <p>{serverResponse}</p>
       <div>
         <h4>Letters to include and their minimum counts:</h4>
-        {errorMessage && (
-          <p style={{ color: "red", fontSize: 12 }}>{errorMessage}</p>
+        {errorMessageDuplicateLetters && (
+          <p style={{ color: "red", fontSize: 12 }}>
+            {errorMessageDuplicateLetters}
+          </p>
         )}
         {letterCounts.map((lc) => (
           <div key={lc.guid}>
@@ -200,7 +209,11 @@ const App: React.FC = () => {
         />
       </div>
       <div>
-        <button onClick={handleSearch} className="button searchbutton">
+        <button
+          onClick={handleSearch}
+          className="button searchbutton"
+          disabled={duplicateLettersFound}
+        >
           Search
         </button>
       </div>
