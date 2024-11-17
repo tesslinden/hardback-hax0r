@@ -1,4 +1,12 @@
+# OS and editor files
 .DS_Store
 *.log
+
+# Virtual environment (Python)
 /hh_backend_env
+
+# Node modules (in case another root-level setup runs npm)
 /node_modules
+
+# Environment files
+.env

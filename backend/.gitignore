@@ -1,3 +1,12 @@
+# Compiled Python files (note: *.py[cod] is equivalent to listing all of these: *.pyc *.pyo *.pyd)
 __pycache__/
 *.py[cod]
-# *.py[cod] is equivalent to listing all of these: *.pyc *.pyo *.pyd
+
+# Virtual environment
+backend_env/
+
+# Local SQLite database files (in case I end up using SQLite)
+*.sqlite3
+
+# Environment files
+.env
