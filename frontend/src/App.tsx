@@ -1,46 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import "./App.css";
 
 const App: React.FC = () => {
-    // ^ React.FC is a type (React Functional Component).
-    //  () means the component doesn't take any props (parameters).
+  // ^ React.FC is a type (React Functional Component).
+  //  () means the component doesn't take any props (parameters).
 
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
   const makeRandomLetterCount = () => {
     return {
       guid: uuidv4(),
       letter: alphabet[Math.floor(Math.random() * alphabet.length)],
-      count: 1
+      count: 1,
     };
-  }
+  };
 
-  const [serverResponse, setServerResponse] = useState<string>('');
-  const [queryDisplay, setQueryDisplay] = useState<string>('');
+  const [serverResponse, setServerResponse] = useState<string>("");
+  const [queryDisplay, setQueryDisplay] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
-  const [letterCounts, setLetterCounts] = useState<{ guid: string; letter: string; count: number | null }[]>([makeRandomLetterCount()]);
+  const [letterCounts, setLetterCounts] = useState<
+    { guid: string; letter: string; count: number | null }[]
+  >([makeRandomLetterCount()]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:5000/') // send a GET (read-only) request to the server (backend)
-      .then(response => {
-        console.log('Success:', response.data); // response.data = response message from the server
+    axios
+      .get("http://127.0.0.1:5000/") // send a GET (read-only) request to the server (backend)
+      .then((response) => {
+        console.log("Success:", response.data); // response.data = response message from the server
         setServerResponse(response.data);
       })
-      .catch(error => {
-        console.error('There was an error!', error);
-        setServerResponse('Server is not responding');
+      .catch((error) => {
+        console.error("There was an error!", error);
+        setServerResponse("Server is not responding");
       });
   }, []);
 
-
   const handleAddLetter = () => {
-    setLetterCounts(
-        [...letterCounts, makeRandomLetterCount()]
-    );
+    setLetterCounts([...letterCounts, makeRandomLetterCount()]);
   };
 
   const handleRemoveLetter = (guid: string) => {
@@ -65,26 +65,27 @@ const App: React.FC = () => {
   const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMinLength(parseInt(e.target.value) || null);
     // ^ setMinLength expects a number or null, so we convert the string to a number, or null if empty (I think).
-    console.log('Min length:', e.target.value);
-  }
+    console.log("Min length:", e.target.value);
+  };
   const handleMaxLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMaxLength(parseInt(e.target.value) || null);
-    console.log('Max length:', e.target.value);
+    console.log("Max length:", e.target.value);
   };
 
   const handleSearch = () => {
     axios
-      .post(
-        'http://127.0.0.1:5000/search',
-        { min_length: minLength, max_length: maxLength, letter_counts: letterCounts }
-      ) // send a POST request to the server (backend)
-      .then(response => {
+      .post("http://127.0.0.1:5000/search", {
+        min_length: minLength,
+        max_length: maxLength,
+        letter_counts: letterCounts,
+      }) // send a POST request to the server (backend)
+      .then((response) => {
         setSearchResults(response.data.result);
         setQueryDisplay(makeQueryDisplay());
       })
-      .catch(error => {
-        console.error('Received error from server:', error);
-        alert('Received error from server. See console.');
+      .catch((error) => {
+        console.error("Received error from server:", error);
+        alert("Received error from server. See console.");
       });
   };
 
@@ -97,81 +98,89 @@ const App: React.FC = () => {
       query += `Max length: ${maxLength}; `;
     }
     if (letterCounts.length > 0) {
-    const counts = letterCounts
-      .map((lc) => `${lc.letter}: ${lc.count}`)
-      .join(", ");
-    query += `Letter counts: (${counts})`;
-  }
-    return query;
+      const counts = letterCounts
+        .map((lc) => `${lc.letter}: ${lc.count}`)
+        .join(", ");
+      query += `Letter counts: (${counts})`;
     }
+    return query;
+  };
 
- console.log('letterCounts: ', letterCounts);
+  console.log("letterCounts: ", letterCounts);
+
   return (
+    <div>
+      <h1>Hardback Hax0r</h1>
+      <p>{serverResponse}</p>
       <div>
-
-          <h1>Hardback Hax0r</h1>
-          <p>{serverResponse}</p>
-          <div>
-              <h4>Letters to include and their minimum counts:</h4>
-              {letterCounts.map((lc) => (
-                  <div key={lc.guid}>
-                      <input
-                          className="textbox"
-                          type="text"
-                          value={lc.letter}
-                          onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
-                          placeholder="Enter a letter"
-                      />
-                      <input
-                          className="textbox"
-                          type="number"
-                          value={lc.count ?? ""}
-                          onChange={(e) => handleCountChange(lc.guid, e.target.value)}
-                          placeholder="Enter a number"
-                      />
-                      <button onClick={() => handleRemoveLetter(lc.guid)} className="button">Remove</button>
-                  </div>
-              ))}
-              <div>
-                  <button onClick={handleAddLetter} className="button">Add letter</button>
-              </div>
+        <h4>Letters to include and their minimum counts:</h4>
+        {letterCounts.map((lc) => (
+          <div key={lc.guid}>
+            <input
+              className="textbox"
+              type="text"
+              value={lc.letter}
+              onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
+              placeholder="Enter a letter"
+            />
+            <input
+              className="textbox"
+              type="number"
+              value={lc.count ?? ""}
+              onChange={(e) => handleCountChange(lc.guid, e.target.value)}
+              placeholder="Enter a number"
+            />
+            <button
+              onClick={() => handleRemoveLetter(lc.guid)}
+              className="button"
+            >
+              Remove
+            </button>
           </div>
-          <div>
-              <h4>Min word length:</h4>
-              <input
-                  className="textbox"
-                  type="number"
-                  value={minLength ?? ""}
-                  // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
-                  onChange={handleMinLengthChange}
-                  placeholder="Enter a number"
-              />
-          </div>
-          <div>
-              <h4>Max word length:</h4>
-              <input
-                  className="textbox"
-                  type="number"
-                  value={maxLength ?? ""}
-                  onChange={handleMaxLengthChange}
-                  placeholder="Enter a number"
-              />
-          </div>
-          <div>
-              <button onClick={handleSearch} className="button searchbutton">Search</button>
-          </div>
-          {searchResults !== null && <div>
-              <h4>Results: {searchResults.length}</h4>
-                <p>Query: {queryDisplay}</p>
-              <ul style={{ listStyleType: "none", padding: 0 }}>
-                  {searchResults?.map((word, index) => (
-                      <li key={index}>{word}</li>
-                  ))}
-              </ul>
-          </div>}
+        ))}
+        <div>
+          <button onClick={handleAddLetter} className="button">
+            Add letter
+          </button>
+        </div>
       </div>
+      <div>
+        <h4>Min word length:</h4>
+        <input
+          className="textbox"
+          type="number"
+          value={minLength ?? ""}
+          // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
+          onChange={handleMinLengthChange}
+          placeholder="Enter a number"
+        />
+      </div>
+      <div>
+        <h4>Max word length:</h4>
+        <input
+          className="textbox"
+          type="number"
+          value={maxLength ?? ""}
+          onChange={handleMaxLengthChange}
+          placeholder="Enter a number"
+        />
+      </div>
+      <div>
+        <button onClick={handleSearch} className="button searchbutton">
+          Search
+        </button>
+      </div>
+      {searchResults !== null && (
+        <div>
+          <h4>Results: {searchResults.length}</h4>
+          <p>Query: {queryDisplay}</p>
+          <ul style={{ listStyleType: "none", padding: 0 }}>
+            {searchResults?.map((word, index) => <li key={index}>{word}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
   );
-
 };
 
 export default App;
