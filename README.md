@@ -10,3 +10,4 @@
 * Add button to remove letter
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file
+* Convert words.txt to SQL database and query it
