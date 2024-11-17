@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const App: React.FC = () => {
     // ^ React.FC is a type (React Functional Component).
@@ -75,7 +76,7 @@ const App: React.FC = () => {
         <button onClick={handleSearch} style={{ marginTop: '32px' }}>Search</button>
           </div>
         {searchResults !== null && <div>
-          <p>Search results:</p>
+          <h4>Search results:</h4>
           <ul style={{ listStyleType: "none", padding: 0 }}>
             {searchResults?.map((word, index) => (
                 <li key={index}>{word}</li>
