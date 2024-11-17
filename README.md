@@ -10,3 +10,5 @@
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file
 * Convert words.txt to SQL database and query it
+* For each word, try pinging wiktionary and if it doesn't work then filter it out
+* Paginate results if there are more than 100

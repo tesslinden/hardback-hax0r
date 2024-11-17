@@ -2,6 +2,17 @@ body {
     padding-left: 20px; /* Add some padding to the left side of the webpage */
 }
 
-.button-spacing {
-    margin-top: 16px;
+.button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.searchbutton {
+    margin-top: 20px;
+}
+
+.textbox {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
 }

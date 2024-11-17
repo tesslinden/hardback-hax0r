@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import './App.css';
 
 const App: React.FC = () => {
@@ -11,7 +12,7 @@ const App: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
-  const [letterCounts, setLetterCounts] = useState<{ letter: string; count: number | null }[]>([]);
+  const [letterCounts, setLetterCounts] = useState<{ guid: string; letter: string; count: number | null }[]>([]);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/') // send a GET (read-only) request to the server (backend)
@@ -28,21 +29,29 @@ const App: React.FC = () => {
 
   const handleAddLetter = () => {
     setLetterCounts([...letterCounts, {
+        guid: uuidv4(),
         letter: alphabet[Math.floor(Math.random() * alphabet.length)],
-        count: Math.floor(Math.random() * 9) + 1
+        count: 1
     }]);
   };
 
-  const handleLetterChange = (index: number, value: string) => {
-    const newRequirements = [...letterCounts]; // create shallow copy of the array
-    newRequirements[index].letter = value;
-    setLetterCounts(newRequirements);
+  const handleRemoveLetter = (guid: string) => {
+    const newLetterCounts = letterCounts.filter((lc) => lc.guid !== guid);
+    setLetterCounts(newLetterCounts);
   };
 
-  const handleCountChange = (index: number, value: string) => {
-    const newRequirements = [...letterCounts];
-    newRequirements[index].count = parseInt(value) || null;
-    setLetterCounts(newRequirements);
+  const handleLetterChange = (guid: string, value: string) => {
+    const newLetterCounts = [...letterCounts]; // create shallow copy of the array
+    const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
+    newLetterCounts[index].letter = value;
+    setLetterCounts(newLetterCounts);
+  };
+
+  const handleCountChange = (guid: string, value: string) => {
+    const newLetterCounts = [...letterCounts];
+    const index = newLetterCounts.findIndex((lc) => lc.guid === guid);
+    newLetterCounts[index].count = parseInt(value) || null;
+    setLetterCounts(newLetterCounts);
   };
 
   const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,45 +90,48 @@ const App: React.FC = () => {
     }
     if (letterCounts.length > 0) {
     const counts = letterCounts
-      .map((req) => `${req.letter}: ${req.count}`)
+      .map((lc) => `${lc.letter}: ${lc.count}`)
       .join(", ");
     query += `Letter counts: (${counts})`;
   }
     return query;
     }
 
-
+ console.log('letterCounts: ', letterCounts);
   return (
       <div>
+
           <h1>Hardback Hax0r</h1>
           <p>{serverResponse}</p>
           <div>
               <h4>Letters to include and their minimum counts:</h4>
-              {letterCounts.map((req, index) => (
-          <div key={index}>
-            <input
-              style={{ marginTop: "16px" }}
-              type="text"
-              value={req.letter}
-              onChange={(e) => handleLetterChange(index, e.target.value)}
-              placeholder="Enter a letter"
-            />
-            <input
-              style={{ marginLeft: "16px" }}
-              type="number"
-              value={req.count ?? ""}
-              onChange={(e) => handleCountChange(index, e.target.value)}
-              placeholder="Enter a number"
-            />
-          </div>
-        ))}
+              {letterCounts.map((lc) => (
+                  <div key={lc.guid}>
+                      <input
+                          className="textbox"
+                          type="text"
+                          value={lc.letter}
+                          onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
+                          placeholder="Enter a letter"
+                      />
+                      <input
+                          className="textbox"
+                          type="number"
+                          value={lc.count ?? ""}
+                          onChange={(e) => handleCountChange(lc.guid, e.target.value)}
+                          placeholder="Enter a number"
+                      />
+                      <button onClick={() => handleRemoveLetter(lc.guid)} className="button">Remove</button>
+                  </div>
+              ))}
               <div>
-                  <button onClick={handleAddLetter} className="button-spacing">Add letter</button>
+                  <button onClick={handleAddLetter} className="button">Add letter</button>
               </div>
           </div>
           <div>
               <h4>Min word length:</h4>
               <input
+                  className="textbox"
                   type="number"
                   value={minLength ?? ""}
                   // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
@@ -130,6 +142,7 @@ const App: React.FC = () => {
           <div>
               <h4>Max word length:</h4>
               <input
+                  className="textbox"
                   type="number"
                   value={maxLength ?? ""}
                   onChange={handleMaxLengthChange}
@@ -137,12 +150,11 @@ const App: React.FC = () => {
               />
           </div>
           <div>
-              <button onClick={handleSearch} className="button-spacing">Search</button>
+              <button onClick={handleSearch} className="button searchbutton">Search</button>
           </div>
           {searchResults !== null && <div>
-              <h4>Search results:</h4>
+              <h4>Results: {searchResults.length}</h4>
                 <p>Query: {queryDisplay}</p>
-              <h5>{searchResults.length} results</h5>
               <ul style={{ listStyleType: "none", padding: 0 }}>
                   {searchResults?.map((word, index) => (
                       <li key={index}>{word}</li>
