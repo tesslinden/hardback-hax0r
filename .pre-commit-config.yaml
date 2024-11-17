@@ -15,7 +15,6 @@ repos:
             - --line-length=120
             - --profile=black
             - --src=backend
-            - --known-first-party=backend
         language_version: python3.9
   - repo: https://github.com/hadialqattan/pycln
     rev: v2.1.1
