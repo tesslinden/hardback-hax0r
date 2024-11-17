@@ -25,15 +25,31 @@ const App: React.FC = () => {
 
   // searchResults will be a list of strings (or null if no results)
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
-  const [minLength, setMinLength] = useState<string>('0');
-  const [maxLength, setMaxLength] = useState<string>('');
+  const [minLength, setMinLength] = useState<number | null>(null);
+  const [maxLength, setMaxLength] = useState<number | null>(null);
+  const [firstLetter, setFirstLetter] = useState<string>('');
+  const [firstLetterCount, setFirstLetterCount] = useState<number | null>(null);
+
+  const handleAddLetter = () => {
+    //TODO
+  };
+
+    const handleFirstLetterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstLetter(e.target.value);
+        console.log('First letter:', e.target.value);
+    };
+    const handleFirstLetterCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstLetterCount(parseInt(e.target.value) || null);
+        console.log('First letter count:', e.target.value);
+    };
 
   const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMinLength(e.target.value);//parseInt(e.target.value));
+    setMinLength(parseInt(e.target.value) || null);
+    // ^ setMinLength expects a number or null, so we convert the string to a number, or null if empty (I think).
     console.log('Min length:', e.target.value);
   }
   const handleMaxLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxLength(e.target.value);
+    setMaxLength(parseInt(e.target.value) || null);
     console.log('Max length:', e.target.value);
   };
 
@@ -52,37 +68,58 @@ const App: React.FC = () => {
 
   return (
       <div>
-        <h1>Hardback Hax0r</h1>
-        <p>{serverResponse}</p>
-        <div>
-          <h4>Min length:</h4>
-          <input
-              type="text"
-              value={minLength}
-              onChange={handleMinLengthChange}
-              placeholder="Enter min length"
-          />
-        </div>
-        <div>
-          <h4>Max length:</h4>
-          <input
-              type="text"
-              value={maxLength}
-              onChange={handleMaxLengthChange}
-              placeholder="Enter a number"
-          />
-        </div>
+          <h1>Hardback Hax0r</h1>
+          <p>{serverResponse}</p>
           <div>
-        <button onClick={handleSearch} style={{ marginTop: '32px' }}>Search</button>
+              <h4>Letters to include and their minimum counts:</h4>
+              <input
+                  type="text"
+                  value={firstLetter}
+                  onChange={handleFirstLetterChange}
+                  placeholder="Enter a letter"
+              />
+              <input
+                  // add padding
+                  style={{ marginLeft: "16px" }}
+                  type="number"
+                  value={firstLetterCount ?? ""}
+                  onChange={handleFirstLetterCountChange}
+                  placeholder="Enter a number"
+              />
+              <div>
+                  <button onClick={handleAddLetter} style={{ marginTop: "32px" }}>Add letter</button>
+              </div>
           </div>
-        {searchResults !== null && <div>
-          <h4>Search results:</h4>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            {searchResults?.map((word, index) => (
-                <li key={index}>{word}</li>
-            ))}
-          </ul>
-        </div>}
+          <div>
+              <h4>Min word length:</h4>
+              <input
+                  type="number"
+                  value={minLength ?? ""}
+                  // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
+                  onChange={handleMinLengthChange}
+                  placeholder="Enter a number"
+              />
+          </div>
+          <div>
+              <h4>Max word length:</h4>
+              <input
+                  type="number"
+                  value={maxLength ?? ""}
+                  onChange={handleMaxLengthChange}
+                  placeholder="Enter a number"
+              />
+          </div>
+          <div>
+              <button onClick={handleSearch} style={{ marginTop: '32px' }}>Search</button>
+          </div>
+          {searchResults !== null && <div>
+              <h4>Search results:</h4>
+              <ul style={{ listStyleType: "none", padding: 0 }}>
+                  {searchResults?.map((word, index) => (
+                      <li key={index}>{word}</li>
+                  ))}
+              </ul>
+          </div>}
       </div>
   );
 
