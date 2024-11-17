@@ -5,8 +5,9 @@ import './App.css';
 const App: React.FC = () => {
     // ^ React.FC is a type (React Functional Component).
     //  () means the component doesn't take any props (parameters).
-
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   const [serverResponse, setServerResponse] = useState<string>('');
+  const [queryDisplay, setQueryDisplay] = useState<string>('');
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
@@ -26,7 +27,10 @@ const App: React.FC = () => {
 
 
   const handleAddLetter = () => {
-    setLetterCounts([...letterCounts, { letter: '', count: null }]);
+    setLetterCounts([...letterCounts, {
+        letter: alphabet[Math.floor(Math.random() * alphabet.length)],
+        count: Math.floor(Math.random() * 9) + 1
+    }]);
   };
 
   const handleLetterChange = (index: number, value: string) => {
@@ -59,12 +63,30 @@ const App: React.FC = () => {
       ) // send a POST request to the server (backend)
       .then(response => {
         setSearchResults(response.data.result);
+        setQueryDisplay(makeQueryDisplay());
       })
       .catch(error => {
         console.error('Received error from server:', error);
         alert('Received error from server. See console.');
       });
   };
+
+  const makeQueryDisplay = () => {
+    let query = "";
+    if (minLength != null) {
+      query += `Min length: ${minLength}; `;
+    }
+    if (maxLength != null) {
+      query += `Max length: ${maxLength}; `;
+    }
+    if (letterCounts.length > 0) {
+    const counts = letterCounts
+      .map((req) => `${req.letter}: ${req.count}`)
+      .join(", ");
+    query += `Letter counts: (${counts})`;
+  }
+    return query;
+    }
 
 
   return (
@@ -119,6 +141,8 @@ const App: React.FC = () => {
           </div>
           {searchResults !== null && <div>
               <h4>Search results:</h4>
+                <p>Query: {queryDisplay}</p>
+              <h5>{searchResults.length} results</h5>
               <ul style={{ listStyleType: "none", padding: 0 }}>
                   {searchResults?.map((word, index) => (
                       <li key={index}>{word}</li>

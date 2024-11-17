@@ -109,7 +109,7 @@ def search():
     print("Search request received")
     data = request.get_json()
     letter_counts_list = data.get("letter_counts") or []
-    min_length = data.get("min_length") or 0
+    min_length = data.get("min_length") or 1
     max_length = data.get("max_length") or max(map(len, WORDS))
 
     try:
