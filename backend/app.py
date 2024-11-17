@@ -20,7 +20,6 @@ CORS(
 # http://example.com and http://api.example.com are "cross-origin"
 
 PATH_TO_WORDS = os.path.join(os.path.dirname(__file__), "words.txt")
-# ^ os.path.dirname(__file__) is the directory containing this file (app.py)
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 
 
@@ -49,52 +48,43 @@ def validate_letter_counts(letter_counts: dict[str, int]) -> dict[str, int]:
     return letter_counts
 
 
+def validate_input(
+    letter_counts: dict[str, int],
+    min_length: int,
+    max_length: int,
+) -> tuple[dict[str, int], int, int]:
+    if not letter_counts:
+        raise ValueError("Missing required input letter_counts")
+    letter_counts = validate_letter_counts(letter_counts)
+    try:
+        min_length = int(min_length)
+        max_length = int(max_length)
+    except ValueError:
+        raise ValueError(f"Non-integer value provided for min_length or max_length")
+    if min_length > max_length:
+        raise ValueError("min_length greater than max_length")
+    return letter_counts, min_length, max_length
+
+
 @app.route("/")
 def hello() -> str:
     idx = random.randint(0, len(WORDS) - 1)
     return f"Server is running. Word #{idx} is: {WORDS[idx]}"
 
 
-@app.route("/compute", methods=["POST"])  # define endpoint "/compute" that accepts POST requests
-def compute():
-    data = request.get_json()  # POST request is expected to have a JSON payload
-    x = data.get("x")  # JSON payload is expected to have a key "x"
-    try:
-        x = float(x)
-        result = x + 1
-        return jsonify({"result": result})
-    except (TypeError, ValueError):
-        return jsonify({"error": f"Invalid input: received {x=}"}), 400
-        # ^ 400 is the HTTP status code for "Bad Request" i.e. the client (frontend app) sent a request that the server
-        #  (this backend app) could not understand
-
-
 @app.route("/search", methods=["POST"])
 def search():
-    print("Searching")
+    print("Search request received")
     data = request.get_json()
+    letter_counts = {"c": 1, "w": 1, "s": 1}
     # letter_counts = data.get("letter_counts", {})
     min_length = data.get("min_length", 0)
-    # max_length = data.get("max_length", max(map(len, WORDS)))
-    letter_counts = {"c": 1, "w": 1, "s": 2}
-    max_length = 10
-
-    if not letter_counts:
-        print("1")
-        return jsonify({"error": "Missing required input letter_counts"}), 400
+    max_length = data.get("max_length", max(map(len, WORDS)))
 
     try:
-        if letter_counts:
-            try:
-                letter_counts = validate_letter_counts(letter_counts)
-            except ValueError as e:
-                return jsonify({"error": f"Invalid input: {e}"}), 400
-        if min_length:
-            min_length = int(min_length)  # TODO: better validation
-        if max_length:
-            max_length = int(max_length)  # TODO: better validation
-    except (TypeError, ValueError) as e:
-        return jsonify({"error": f"Invalid input: {e}"}), 400
+        letter_counts, min_length, max_length = validate_input(letter_counts, min_length, max_length)
+    except ValueError as e:
+        return jsonify({"error": f"Invalid input: {e}"})
 
     filtered_words = WORDS.copy()
     filtered_words = [word for word in filtered_words if len(word) >= min_length]
@@ -102,8 +92,6 @@ def search():
     filtered_words = [
         word for word in filtered_words if all(word.count(letter) >= count for letter, count in letter_counts.items())
     ]
-
-    print(filtered_words)
     return jsonify({"result": filtered_words})
 
 
