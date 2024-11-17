@@ -1,3 +1,7 @@
 body {
     padding-left: 20px; /* Add some padding to the left side of the webpage */
 }
+
+.button-spacing {
+    margin-top: 16px;
+}

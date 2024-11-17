@@ -7,13 +7,15 @@ const App: React.FC = () => {
     //  () means the component doesn't take any props (parameters).
 
   const [serverResponse, setServerResponse] = useState<string>('');
-  // ^ creates a state variable `serverResponse` and a function `setServerResponse` to update it.
-    // initializes it as an empty string.
+  const [searchResults, setSearchResults] = useState<string[] | null>(null);
+  const [minLength, setMinLength] = useState<number | null>(null);
+  const [maxLength, setMaxLength] = useState<number | null>(null);
+  const [letterCounts, setLetterCounts] = useState<{ letter: string; count: number | null }[]>([]);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:5000/') // send a GET (read-only) request to the server (backend)
       .then(response => {
-        console.log('Success:', response.data); // response.data = 'Hello, World!'
+        console.log('Success:', response.data); // response.data = response message from the server
         setServerResponse(response.data);
       })
       .catch(error => {
@@ -23,25 +25,21 @@ const App: React.FC = () => {
   }, []);
 
 
-  // searchResults will be a list of strings (or null if no results)
-  const [searchResults, setSearchResults] = useState<string[] | null>(null);
-  const [minLength, setMinLength] = useState<number | null>(null);
-  const [maxLength, setMaxLength] = useState<number | null>(null);
-  const [firstLetter, setFirstLetter] = useState<string>('');
-  const [firstLetterCount, setFirstLetterCount] = useState<number | null>(null);
-
   const handleAddLetter = () => {
-    //TODO
+    setLetterCounts([...letterCounts, { letter: '', count: null }]);
   };
 
-    const handleFirstLetterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstLetter(e.target.value);
-        console.log('First letter:', e.target.value);
-    };
-    const handleFirstLetterCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstLetterCount(parseInt(e.target.value) || null);
-        console.log('First letter count:', e.target.value);
-    };
+  const handleLetterChange = (index: number, value: string) => {
+    const newRequirements = [...letterCounts]; // create shallow copy of the array
+    newRequirements[index].letter = value;
+    setLetterCounts(newRequirements);
+  };
+
+  const handleCountChange = (index: number, value: string) => {
+    const newRequirements = [...letterCounts];
+    newRequirements[index].count = parseInt(value) || null;
+    setLetterCounts(newRequirements);
+  };
 
   const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMinLength(parseInt(e.target.value) || null);
@@ -55,7 +53,10 @@ const App: React.FC = () => {
 
   const handleSearch = () => {
     axios
-      .post('http://127.0.0.1:5000/search', { min_length: minLength, max_length: maxLength }) // send a POST request to the server (backend)
+      .post(
+        'http://127.0.0.1:5000/search',
+        { min_length: minLength, max_length: maxLength, letter_counts: letterCounts }
+      ) // send a POST request to the server (backend)
       .then(response => {
         setSearchResults(response.data.result);
       })
@@ -72,22 +73,26 @@ const App: React.FC = () => {
           <p>{serverResponse}</p>
           <div>
               <h4>Letters to include and their minimum counts:</h4>
-              <input
-                  type="text"
-                  value={firstLetter}
-                  onChange={handleFirstLetterChange}
-                  placeholder="Enter a letter"
-              />
-              <input
-                  // add padding
-                  style={{ marginLeft: "16px" }}
-                  type="number"
-                  value={firstLetterCount ?? ""}
-                  onChange={handleFirstLetterCountChange}
-                  placeholder="Enter a number"
-              />
+              {letterCounts.map((req, index) => (
+          <div key={index}>
+            <input
+              style={{ marginTop: "16px" }}
+              type="text"
+              value={req.letter}
+              onChange={(e) => handleLetterChange(index, e.target.value)}
+              placeholder="Enter a letter"
+            />
+            <input
+              style={{ marginLeft: "16px" }}
+              type="number"
+              value={req.count ?? ""}
+              onChange={(e) => handleCountChange(index, e.target.value)}
+              placeholder="Enter a number"
+            />
+          </div>
+        ))}
               <div>
-                  <button onClick={handleAddLetter} style={{ marginTop: "32px" }}>Add letter</button>
+                  <button onClick={handleAddLetter} className="button-spacing">Add letter</button>
               </div>
           </div>
           <div>
@@ -110,7 +115,7 @@ const App: React.FC = () => {
               />
           </div>
           <div>
-              <button onClick={handleSearch} style={{ marginTop: '32px' }}>Search</button>
+              <button onClick={handleSearch} className="button-spacing">Search</button>
           </div>
           {searchResults !== null && <div>
               <h4>Search results:</h4>

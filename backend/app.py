@@ -1,6 +1,7 @@
 import os
 import random
 import re
+from typing import Union
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -36,14 +37,13 @@ WORDS = get_words()  # load words upon starting the server
 
 def validate_letter_counts(letter_counts: dict[str, int]) -> dict[str, int]:
     letter_counts = {k.lower(): v for k, v in letter_counts.items()}
-    # TODO: improve validation
     if len(set(letter_counts.keys())) != len(letter_counts.keys()):
         raise ValueError("letter_counts contains duplicate keys")
-    if any([key not in ALPHABET for key in letter_counts.keys()]):
+    if any(key not in ALPHABET for key in letter_counts.keys()):
         raise ValueError("letter_counts.keys() contains invalid characters")
-    if any([type(value) != int for value in letter_counts.values()]):
+    if not all(isinstance(value, int) for value in letter_counts.values()):
         raise ValueError("letter_counts contains non-integer values")
-    if any([value < 0 for value in letter_counts.values()]):
+    if any(value < 0 for value in letter_counts.values()):
         raise ValueError("letter_counts contains negative values")
     return letter_counts
 
@@ -66,6 +66,38 @@ def validate_input(
     return letter_counts, min_length, max_length
 
 
+def extract_letter_counts(letter_counts_list: list[dict[str, Union[int, str]]]) -> dict[str, int]:
+    """
+    input: [{'letter': 'a', 'count': 3}, {'letter': '', 'count': None}]
+    output: {'a': 3}
+    """
+    letter_counts_list = [
+        {letter_count["letter"].lower(): letter_count["count"]}
+        for letter_count in letter_counts_list
+        if letter_count["letter"] and letter_count["count"]
+    ]
+    return {k: v for d in letter_counts_list for k, v in d.items()}
+
+
+def validate_letter_counts_list(
+    letter_counts_list: list[dict[str, Union[int, str]]]
+) -> list[dict[str, Union[int, str]]]:
+    if not isinstance(letter_counts_list, list):
+        raise ValueError("letter_counts_list is not a list")
+    for letter_count in letter_counts_list:
+        if not isinstance(letter_count, dict):
+            raise ValueError("letter_counts_list contains non-dict values")
+        if not letter_count.get("letter"):
+            raise ValueError("Missing letter")
+        if not letter_count.get("count"):
+            raise ValueError("Missing count")
+        if not isinstance(letter_count["letter"], str):
+            raise ValueError("letter_counts_list contains non-string values")
+        if not isinstance(letter_count["count"], int):
+            raise ValueError("letter_counts_list contains non-integer values")
+    return letter_counts_list
+
+
 @app.route("/")
 def hello() -> str:
     idx = random.randint(0, len(WORDS) - 1)
@@ -76,12 +108,13 @@ def hello() -> str:
 def search():
     print("Search request received")
     data = request.get_json()
-    letter_counts = {"c": 1, "w": 1, "s": 1}
-    # letter_counts = data.get("letter_counts", {})
-    min_length = data.get("min_length", 0)
-    max_length = data.get("max_length", max(map(len, WORDS)))
+    letter_counts_list = data.get("letter_counts") or []
+    min_length = data.get("min_length") or 0
+    max_length = data.get("max_length") or max(map(len, WORDS))
 
     try:
+        letter_counts_list = validate_letter_counts_list(letter_counts_list)
+        letter_counts = extract_letter_counts(letter_counts_list)
         letter_counts, min_length, max_length = validate_input(letter_counts, min_length, max_length)
     except ValueError as e:
         return jsonify({"error": f"Invalid input: {e}"})
