@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
+import config from "./config";
 
 const MainPage: React.FC = () => {
   // ^ React.FC is a type (React Functional Component).
@@ -68,7 +69,7 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/") // send a GET (read-only) request to the server (backend)
+      .get(`${config.apiUrl}/`) // send a GET (read-only) request to the server (backend)
       .then((response) => {
         console.log("Success:", response.data); // response.data = response message from the server
         setServerResponse(response.data);
@@ -114,7 +115,7 @@ const MainPage: React.FC = () => {
 
   const handleSearch = () => {
     axios
-      .post("http://127.0.0.1:5000/search", {
+      .post(`${config.apiUrl}/search`, {
         min_length: minLength,
         max_length: maxLength,
         letter_counts: filteredLetterCounts,
