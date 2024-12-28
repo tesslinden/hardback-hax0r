@@ -3,7 +3,7 @@
 *.log
 
 # Virtual environment (Python)
-/hh_backend_env
+/hh-env
 
 # Node modules (in case another root-level setup runs npm)
 /node_modules
@@ -33,6 +33,7 @@
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
