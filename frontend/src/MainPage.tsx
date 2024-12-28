@@ -65,7 +65,7 @@ const MainPage: React.FC = () => {
     } else {
       setErrorMessageInvalidLetters("");
     }
-  }, [letterCounts, duplicateLettersFound]);
+  }, [letterCounts, duplicateLettersFound]); // these are dependencies: the effect will run whenever letterCounts or duplicateLettersFound changes
 
   useEffect(() => {
     axios
@@ -78,7 +78,7 @@ const MainPage: React.FC = () => {
         console.error("There was an error!", error);
         setServerResponse("Server is not responding");
       });
-  }, []);
+  }, []); // no dependencies, so this effect runs only once, when the component is mounted (appears on screen)
 
   const handleAddLetter = () => {
     setLetterCounts([...letterCounts, makeRandomLetterCount(letterCounts)]);
