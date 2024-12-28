@@ -1,6 +1,7 @@
 # hardback-hax0r
 
-## TODOs
+## TODO
+* search should happen automatically rather than having to hit search
 * split webpage into 3 columns: letter counts; min length and max length inputs; search results
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file
