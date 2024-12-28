@@ -10,7 +10,11 @@ app = Flask(__name__)  # create a Flask app
 # ^ __name__ is '__main__' when this script is run directly (different if imported, according to copilot)
 CORS(
     app,
-    origins=["http://localhost:3000", "https://hardback-hax0r.vercel.app"]
+    origins=[
+        "http://localhost:3000",
+        "https://hardback-hax0r.vercel.app",
+        "http://hardback-hax0r.vercel.app",
+    ],
     # resources={r"/compute": {"origins": ["http://localhost:3000"]}}
     # ^ restricts requests to the /compute endpoint to only come from http://localhost:3000
     #   (good practice for a production environment, less important for development)
