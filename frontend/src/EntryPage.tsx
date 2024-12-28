@@ -6,7 +6,7 @@ const EntryPage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-4xl mb-8">Welcome to Hardback Hax0r</h1>
+      <h1 className="text-4xl mb-8">Welcome to Hardback Hacker</h1>
       <button className="button" onClick={() => navigate("/main")}>
         Enter Application
       </button>
