@@ -152,7 +152,7 @@ const MainPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Hardback Hax0r</h1>
+      <h1>Hardback Hacker</h1>
       <p>{serverResponse}</p>
       <div>
         <h4>Letters to include and their minimum counts:</h4>
