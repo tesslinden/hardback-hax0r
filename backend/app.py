@@ -129,12 +129,12 @@ def search():
 
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    debug_mode = os.environ.get("FLASK_ENV") == "development"
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        # ^ configures it so that flask "listens" on http://127.0.0.1:5000/
-        #  (you should see "Hello, world!" at that address in chrome)
-        debug=True,
+        host="0.0.0.0",
+        port=port,
+        debug=debug_mode,
         # debug=True means reload the server when you make changes to the code
         #  (according to copilot, haven't double-checked)
     )
