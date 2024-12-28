@@ -1,39 +1,48 @@
 # hardback-hax0r
 
 ## Development setup
-### Clone the repo
+#### Clone the repo
 ```
 cd ~/projects
 git clone https://github.com/tesslinden/hardback-hax0r.git
 ```
-### Set up the backend
+#### Set up pre-commit hooks
+```
+cd ~/projects/hardback-hax0r
+pre-commit install
+```
+#### Set up the backend
+Ensure correct version of Python is being used (3.9.17):
+```
+python --version
+```
+If not, set python version to 3.9.17, then return here.
+Set python interpreter in PyCharm to `/usr/bin/python3`.
+
+Create virtual environment and install dependencies:
 ``` 
 cd ~/projects/hardback-hax0r/
 python3 -m venv hh-env
 source hh-env/bin/activate
 pip install -r requirements.txt --no-cache-dir --index-url https://pypi.org/simple
 ```
-### Set up the frontend
-```
-cd ~/projects/hardback-hax0r/frontend
-```
+
+#### Set up the frontend
 Check if you have Node.js installed:
 ```
+cd ~/projects/hardback-hax0r/frontend
 node -v
 npm -v
 ```
 If not, install Node.js, then return here.
 ```
+cd ~/projects/hardback-hax0r/frontend
 nvm install # installs the version of node specified in .nvmrc
 nvm use # uses the version of node specified in .nvmrc
 npm install # installs the dependencies listed in package.json
 ```
-### Set up pre-commit hooks
-```
-cd ~/projects/hardback-hax0r
-pre-commit install
-```
-### Run the website locally to test your setup is working
+
+#### Run the website locally to test your setup is working
 Run the backend:
 ```
 cd ~/projects/hardback-hax0r
@@ -46,6 +55,7 @@ cd ~/projects/hardback-hax0r/frontend
 npm start
 ```
 Go to `http://localhost:3000/` to see the website.
+Alternatively, in PyCharm, run the HH configuration to start the backend and frontend together.
 
 
 ## TODO
