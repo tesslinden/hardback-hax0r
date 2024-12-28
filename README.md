@@ -17,7 +17,7 @@ Ensure correct version of Python is being used (3.9.17):
 python --version
 ```
 If not, set python version to 3.9.17, then return here.
-Set python interpreter in PyCharm to `/usr/bin/python3`.
+Set python interpreter in PyCharm to `~/projects/hardback-hax0r/hh-env/bin/python3`.
 
 Create virtual environment and install dependencies:
 ``` 
