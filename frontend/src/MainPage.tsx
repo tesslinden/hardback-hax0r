@@ -173,14 +173,14 @@ const MainPage: React.FC = () => {
               type="text"
               value={lc.letter}
               onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
-              placeholder="Enter a letter"
+              placeholder="Letter"
             />
             <input
               className="textbox"
               type="number"
               value={lc.count ?? ""}
               onChange={(e) => handleCountChange(lc.guid, e.target.value)}
-              placeholder="Enter a number"
+              placeholder="Number"
             />
             {letterCounts.length > 1 && (
               <button
@@ -215,7 +215,7 @@ const MainPage: React.FC = () => {
           value={minLength ?? ""}
           // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
           onChange={handleMinLengthChange}
-          placeholder="Enter a number"
+          placeholder="Number"
         />
       </div>
       <div>
@@ -225,7 +225,7 @@ const MainPage: React.FC = () => {
           type="number"
           value={maxLength ?? ""}
           onChange={handleMaxLengthChange}
-          placeholder="Enter a number"
+          placeholder="Number"
         />
       </div>
       <div>
