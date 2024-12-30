@@ -31,9 +31,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 /*
   AuthProvider wraps the entire application and provides authentication state and functions
 */
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -71,15 +69,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
 /*
-useAuth is a custom hook that provides access to the AuthContext
- */
-export const useAuth = () => {
+  useAuth is a custom hook that provides access to the AuthContext
+*/
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
-};
+}
