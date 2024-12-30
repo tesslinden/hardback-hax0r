@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session, sessionmaker
 # Load environment variables from .env file into os.environ
 load_dotenv()
 
-# Get database URL from environment variable
+# Get database URL from environment variable. Default to local db URL if not set.
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://hh_user:hhdevpw@localhost:5432/hh-db-local")
 
 # Create SQLAlchemy engine
