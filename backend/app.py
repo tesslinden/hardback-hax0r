@@ -13,7 +13,7 @@ CORS(
     origins=[
         "http://localhost:3000",
         "https://hardback-hax0r.vercel.app",
-        "http://hardback-hax0r.vercel.app",
+        "https://hardbackhacker.com",
     ],
     # resources={r"/compute": {"origins": ["http://localhost:3000"]}}
     # ^ restricts requests to the /compute endpoint to only come from http://localhost:3000
