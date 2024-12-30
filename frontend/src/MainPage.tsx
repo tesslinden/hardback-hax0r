@@ -167,7 +167,7 @@ const MainPage: React.FC = () => {
           </p>
         )}
         {letterCounts.map((lc) => (
-          <div key={lc.guid}>
+          <div key={lc.guid} className="letter-input-container">
             <input
               className="textbox"
               type="text"

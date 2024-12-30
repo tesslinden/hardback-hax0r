@@ -11,8 +11,23 @@ body {
     margin-top: 20px;
 }
 
+.letter-input-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
 .textbox {
     margin-top: 8px;
     margin-bottom: 8px;
     margin-right: 16px;
+    width: 100px; /* Set the width of the textbox */
+}
+
+/* Responsive styles for smaller screens (e.g. mobile) */
+@media screen and (max-width: 480px) {
+    .textbox {
+        width: 60px;
+    }
 }
