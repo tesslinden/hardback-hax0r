@@ -64,7 +64,7 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 * Search should happen automatically rather than having to hit search
 * Split webpage into 3 columns: letter counts; min length and max length inputs; search results
 * Add button to clear all inputs, and ask user to confirm
-* Add button to download results as text file
+* Add button to download results as text file or copy to clipboard
 * Convert words.txt to SQL database and query it
 * For each word, try pinging wiktionary and if it doesn't work then filter it out
 * Paginate results if there are more than 100
