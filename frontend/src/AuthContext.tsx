@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { isValidUUID } from "./utils/validation";
 
-interface User {
+export interface User {
   guid: string;
   googleId: string; // Google's user ID
   email: string;
