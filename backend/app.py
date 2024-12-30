@@ -6,6 +6,11 @@ from typing import Union
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+from db.db import Base, engine
+
+# Initialize database tables
+Base.metadata.create_all(bind=engine)
+
 app = Flask(__name__)  # create a Flask app
 # ^ __name__ is '__main__' when this script is run directly (different if imported, according to copilot)
 CORS(
