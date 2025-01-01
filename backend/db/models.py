@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from .db import Base
 
 
-class User(Base):
+class Users(Base):
     __tablename__ = "users"
 
     guid = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
@@ -20,19 +20,19 @@ class User(Base):
     last_login = Column(DateTime, default=datetime.now(timezone.utc))
 
 
-def get_user_by_google_id(db: Session, google_id: str) -> Optional[User]:
-    return db.query(User).filter(User.google_id == google_id).first()
+def get_user_by_google_id(db: Session, google_id: str) -> Optional[Users]:
+    return db.query(Users).filter(Users.google_id == google_id).first()
 
 
-def create_user(db: Session, google_id: str, email: str, name: str) -> User:
-    user = User(google_id=google_id, email=email, name=name)
+def create_user(db: Session, google_id: str, email: str, name: str) -> Users:
+    user = Users(google_id=google_id, email=email, name=name)
     db.add(user)
     db.commit()
     db.refresh(user)
     return user
 
 
-def update_last_login(db: Session, user: User) -> User:
+def update_last_login(db: Session, user: Users) -> Users:
     user.last_login = datetime.now(timezone.utc)
     db.commit()
     db.refresh(user)

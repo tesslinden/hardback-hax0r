@@ -9,7 +9,9 @@ from flask_cors import CORS
 from db.db import Base, engine
 
 # Initialize database tables
+print("Creating tables...")
 Base.metadata.create_all(bind=engine)
+print("Tables:", Base.metadata.tables.keys())
 
 app = Flask(__name__)  # create a Flask app
 # ^ __name__ is '__main__' when this script is run directly (different if imported, according to copilot)
