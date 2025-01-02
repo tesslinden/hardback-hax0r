@@ -68,7 +68,6 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 * Convert words.txt to SQL database and query it
 * For each word, try pinging wiktionary and if it doesn't work then filter it out
 * Paginate results if there are more than 100
-* Allow user to log in with Google account
 * Store user search history and allow them to browse it
 * Set up hardbackhacker.com URL
 * Handle loading state with buffering animation
