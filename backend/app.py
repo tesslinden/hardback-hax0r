@@ -3,8 +3,22 @@ import random
 import re
 from typing import Union
 
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from google.auth.transport import requests
+from google.oauth2 import id_token
+
+# Load environment variables from .env file. Must be done before importing other modules that use them.
+load_dotenv()
+
+from db.db import Base, engine, get_db
+from db.models import create_user, get_user_by_google_id, update_last_login
+
+# Initialize database tables
+print("Creating tables...")
+Base.metadata.create_all(bind=engine)
+print("Tables:", Base.metadata.tables.keys())
 
 app = Flask(__name__)  # create a Flask app
 # ^ __name__ is '__main__' when this script is run directly (different if imported, according to copilot)
@@ -25,6 +39,8 @@ CORS(
 # http://example.com/page1 and http://example.com/page2 are "same origin"
 # http://example.com and http://anotherdomain.com are "cross-origin"
 # http://example.com and http://api.example.com are "cross-origin"
+
+GOOGLE_CLIENT_ID = os.environ["GOOGLE_CLIENT_ID"]
 
 PATH_TO_WORDS = os.path.join(os.path.dirname(__file__), "words.txt")
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
@@ -132,6 +148,53 @@ def search():
         word for word in filtered_words if all(word.count(letter) >= count for letter, count in letter_counts.items())
     ]
     return jsonify({"result": filtered_words})
+
+
+@app.route("/auth/google", methods=["POST"])
+def handle_google_oauth_callback():
+
+    token = request.json.get("credential")
+    if not token:
+        return jsonify({"error": "No token provided"}), 400
+
+    # Verify token with Google
+    try:
+        id_info = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
+    except ValueError as e:
+        return jsonify({"error": "Invalid token"}), 401
+
+    # Extract user info from the token
+    try:
+        google_id = id_info["sub"]  # Google's unique identifier for the user
+        email = id_info["email"]
+        name = id_info.get("name", email.split("@")[0])
+    except KeyError as e:
+        return jsonify({"error": "Invalid token format"}), 400
+
+    # Update DB
+    try:
+        # Get database session
+        db = next(get_db())
+        # Check if user exists; update last login if so, create new user if not
+        user = get_user_by_google_id(db, google_id)
+        if user:
+            user = update_last_login(db, user)
+        else:
+            user = create_user(db, google_id, email, name)
+        # Return user data
+        return jsonify(
+            {
+                "guid": str(user.guid),
+                "googleId": user.google_id,
+                "email": user.email,
+                "name": user.name,
+                "createdAt": user.created_at.isoformat(),
+                "lastLogin": user.last_login.isoformat(),
+            }
+        )
+    except Exception as e:
+        print(f"Authentication error: {str(e)}")
+        return jsonify({"error": "Authentication failed"}), 500
 
 
 if __name__ == "__main__":

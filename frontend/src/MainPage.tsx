@@ -3,6 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import config from "./config";
+import LoginStatus from "./components/LoginStatus";
 
 const MainPage: React.FC = () => {
   // ^ React.FC is a type (React Functional Component).
@@ -151,7 +152,8 @@ const MainPage: React.FC = () => {
   console.log("invalidLettersFound: ", invalidLettersFound);
 
   return (
-    <div>
+    <div className="relative">
+      <LoginStatus />
       <h1>Hardback Hacker</h1>
       <p>{serverResponse}</p>
       <div>

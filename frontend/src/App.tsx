@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import MainPage from "./MainPage"; // We'll create this from your existing App component
 import EntryPage from "./EntryPage";
 import config from "./config";
+import { AuthProvider } from "./AuthContext";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -10,13 +11,15 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<EntryPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<EntryPage />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
