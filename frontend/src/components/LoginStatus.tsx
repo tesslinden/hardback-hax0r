@@ -29,16 +29,11 @@ const LoginStatus: React.FC = () => {
   }
 
   return (
-    <div className="absolute top-4 right-4 flex items-center gap-4">
+    <div className="login-status-container">
       {isAuthenticated ? (
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-600">Welcome, {user?.name}</span>
-          <button
-            onClick={logout}
-            className="text-sm text-blue-600 hover:text-blue-800"
-          >
-            Logout
-          </button>
+        <div>
+          Welcome, {user?.name}
+          <button onClick={logout}>Log out</button>
         </div>
       ) : (
         <GoogleLogin

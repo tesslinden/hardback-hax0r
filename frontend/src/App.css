@@ -25,6 +25,13 @@ body {
     width: 100px; /* Set the width of the textbox */
 }
 
+.login-status-container {
+    margin-top: 8px;
+    width: 200px;  /* Fixed width for the container */
+    margin-left: auto;  /* These two margin properties will right-align the container */
+    margin-right: 20px;
+}
+
 /* Responsive styles for smaller screens (e.g. mobile) */
 @media screen and (max-width: 480px) {
     .textbox {
