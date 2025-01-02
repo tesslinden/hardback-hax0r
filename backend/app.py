@@ -157,15 +157,11 @@ def handle_google_oauth_callback():
     if not token:
         return jsonify({"error": "No token provided"}), 400
 
-    print(f"{token=}")
-
     # Verify token with Google
     try:
         id_info = id_token.verify_oauth2_token(token, requests.Request(), GOOGLE_CLIENT_ID)
     except ValueError as e:
         return jsonify({"error": "Invalid token"}), 401
-
-    print(f"{id_info=}")
 
     # Extract user info from the token
     try:
