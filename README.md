@@ -72,3 +72,5 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 * Store user search history and allow them to browse it
 * Set up hardbackhacker.com URL
 * Handle loading state with buffering animation
+* Add tests
+* Add CI/CD, maybe using AWS CodeBuild
