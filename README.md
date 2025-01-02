@@ -69,6 +69,7 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 * For each word, try pinging wiktionary and if it doesn't work then filter it out
 * Paginate results if there are more than 100
 * Store user search history and allow them to browse it
-* Handle loading state with buffering animation
+* Handle loading state: show buffering animation, and don't show login button until Render completes build 
+   (otherwise it can look like website and login are broken)
 * Add tests
 * Add CI/CD, maybe using AWS CodeBuild
