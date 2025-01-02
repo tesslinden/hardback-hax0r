@@ -32,8 +32,10 @@ const LoginStatus: React.FC = () => {
     <div className="login-status-container">
       {isAuthenticated ? (
         <div>
-          Welcome, {user?.name}
-          <button onClick={logout}>Log out</button>
+          <div className="login-status">Welcome, {user?.name}</div>
+          <button onClick={logout} className="logout-button">
+            Log out
+          </button>
         </div>
       ) : (
         <GoogleLogin
