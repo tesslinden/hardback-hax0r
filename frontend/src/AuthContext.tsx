@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { isValidUUID } from "./utils/validation";
 
 export interface User {
   guid: string;
@@ -40,23 +39,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser); // as User;
-      if (isValidUUID(parsedUser.guid)) {
-        setUser(parsedUser);
-        setIsAuthenticated(true);
-      } else {
-        localStorage.removeItem("user");
-      }
+      setUser(parsedUser);
+      setIsAuthenticated(true);
     }
   }, []);
 
   const login = (userData: User) => {
-    if (isValidUUID(userData.guid)) {
-      setUser(userData);
-      setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(userData));
-    } else {
-      console.error("Invalid UUID format in user data");
-    }
+    setUser(userData);
+    setIsAuthenticated(true);
+    localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
