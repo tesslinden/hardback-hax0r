@@ -29,7 +29,6 @@ CORS(
         "https://hardback-hax0r.vercel.app",
         "https://hardbackhacker.com",
         "https://www.hardbackhacker.com",
-        "https://hardback-hax0r-git-google-login-tess-lindens-projects.vercel.app",
     ],
     # resources={r"/compute": {"origins": ["http://localhost:3000"]}}
     # ^ restricts requests to the /compute endpoint to only come from http://localhost:3000
