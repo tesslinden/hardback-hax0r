@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { isValidUUID } from "./utils/validation";
 
 export interface User {
@@ -65,9 +66,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ""}>
+      <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+        {children}
+      </AuthContext.Provider>
+    </GoogleOAuthProvider>
   );
 }
 
