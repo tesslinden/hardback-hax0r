@@ -70,7 +70,6 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 * Paginate results if there are more than 100
 * Allow user to log in with Google account
 * Store user search history and allow them to browse it
-* Set up hardbackhacker.com URL
 * Handle loading state with buffering animation
 * Add tests
 * Add CI/CD, maybe using AWS CodeBuild
