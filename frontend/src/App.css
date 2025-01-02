@@ -30,18 +30,21 @@ body {
 
 .login-status-container {
     margin-top: 8px;
-    width: 200px;  /* Fixed width for the container */
+    width: 150px;  /* Fixed width for the container */
     margin-left: auto;  /* These two margin properties will right-align the container */
     margin-right: 20px;
 }
 
 .login-status {
-    font-size: 14px;  /* Smaller font size for welcome text */
+    font-size: 13px;  /* Smaller font size for welcome text */
+    text-align: right;
 }
 
 .logout-button {
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 8px;
+    display: block; /* Makes the button behave like a block element, taking up its own line */
+    margin-left: auto; /* In combination with display: block, this right-aligns the button */
 }
 
 
