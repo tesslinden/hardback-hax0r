@@ -65,7 +65,7 @@ const MainPage: React.FC = () => {
     } else {
       setErrorMessageInvalidLetters("");
     }
-  }, [letterCounts, duplicateLettersFound]); // these are dependencies: the effect will run whenever letterCounts or duplicateLettersFound changes
+  }, [letterCounts, duplicateLettersFound, invalidLettersFound]); // these are dependencies: the effect will run whenever letterCounts or duplicateLettersFound changes
 
   useEffect(() => {
     axios
