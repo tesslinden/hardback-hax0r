@@ -28,7 +28,9 @@ const MainPage: React.FC = () => {
     };
   };
 
-  const [serverResponse, setServerResponse] = useState<string>("");
+  const [initialServerResponse, setInitialServerResponse] =
+    useState<string>("");
+
   const [queryDisplay, setQueryDisplay] = useState<string>("");
   const [loadingResults, setLoadingResults] = useState(false);
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
@@ -76,11 +78,11 @@ const MainPage: React.FC = () => {
       .get(`${config.apiUrl}/`) // send a GET (read-only) request to the server (backend)
       .then((response) => {
         console.log("Success:", response.data); // response.data = response message from the server
-        setServerResponse(response.data);
+        setInitialServerResponse(response.data);
       })
       .catch((error) => {
         console.error("There was an error!", error);
-        setServerResponse("Server is not responding");
+        setInitialServerResponse("Server is not responding");
       });
   }, []); // no dependencies, so this effect runs only once, when the component is mounted (appears on screen)
 
@@ -158,7 +160,7 @@ const MainPage: React.FC = () => {
   return (
     <div className="flex justify-between items-center mb-4">
       <h1>Hardback Hacker</h1>
-      <p>{serverResponse}</p>
+      <p>{initialServerResponse}</p>
       <div>
         <h4>Letters to include and their minimum counts:</h4>
         {errorMessageDuplicateLetters && (
