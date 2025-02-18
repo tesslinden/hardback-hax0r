@@ -61,15 +61,21 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 
 
 ## TODO
+Major:
+* Handle loading state: show buffering animation, and don't show login button until Render completes build 
+   (otherwise it can look like website and login are broken)
+* Store user search history and allow them to browse it
+  * Allow user to star favorite searches 
+* Convert words.txt to SQL database and query it
+* For each word, try pinging wiktionary and if it doesn't work then filter it out
+* Paginate results if there are more than 100 (on backend and frontend)
+
+Minor:
 * Search should happen automatically rather than having to hit search
 * Split webpage into 3 columns: letter counts; min length and max length inputs; search results
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file or copy to clipboard
-* Convert words.txt to SQL database and query it
-* For each word, try pinging wiktionary and if it doesn't work then filter it out
-* Paginate results if there are more than 100
-* Store user search history and allow them to browse it
-* Handle loading state: show buffering animation, and don't show login button until Render completes build 
-   (otherwise it can look like website and login are broken)
+
+Workflow:
 * Add tests
 * Add CI/CD, maybe using AWS CodeBuild
