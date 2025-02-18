@@ -3,18 +3,50 @@
     --background: #ffffff;
     --text: #1a1a1a;
     --border: #e5e7eb;
+    --input-bg: #ffffff;
+    --input-text: #1a1a1a;
+    --button-bg: #f3f4f6;        /* Light gray background */
+    --button-text: #1a1a1a;      /* Nearly black text */
+    --button-border: #d1d5db;    /* Light gray border */
+    --button-hover-bg: #e5e7eb;  /* Slightly darker on hover */
 }
 :root[class~="dark"] {
     /* Dark theme variables */
     --background: #1a1a1a;
     --text: #ffffff;
     --border: #374151;
+    --input-bg: #2d2d2d;
+    --input-text: #ffffff;
+    --button-bg: #374151;        /* Dark gray background */
+    --button-text: #ffffff;      /* White text */
+    --button-border: #4b5563;    /* Darker gray border */
+    --button-hover-bg: #4b5563;  /* Slightly lighter on hover */
 }
 body {
     padding-left: 20px; /* Add some padding to the left side of the webpage */
     background-color: var(--background);
     color: var(--text);
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button styles */
+.button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: var(--button-bg);  /* Theme-aware background */
+    color: var(--button-text);           /* Theme-aware text color */
+    border: 1px solid var(--button-border);
+    padding: 6px 12px;                   /* Comfortable padding */
+    border-radius: 4px;                  /* Rounded corners */
+    cursor: pointer;                     /* Hand cursor on hover */
+    transition: all 0.3s ease;           /* Smooth transitions */
+}
+.button:hover:not(:disabled) {       /* Only show hover effect if not disabled */
+    background-color: var(--button-hover-bg);
+}
+.button:disabled {
+    opacity: 0.5;                    /* Make disabled buttons look faded */
+    cursor: not-allowed;             /* Change cursor for disabled state */
 }
 
 /* Top right corner elements */
@@ -41,10 +73,6 @@ body {
 }
 
 /* Main page elements */
-.button {
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
 .searchbutton {
     margin-top: 20px;
 }
@@ -59,6 +87,12 @@ body {
     margin-bottom: 8px;
     margin-right: 16px;
     width: 100px; /* Set the width of the textbox */
+    background-color: var(--input-bg);  /* Uses theme variable for background */
+    color: var(--input-text);           /* Uses theme variable for text color */
+    border: 1px solid var(--border);    /* Uses existing border color variable */
+    padding: 4px 8px;                   /* Adds some padding inside the input */
+    border-radius: 4px;                 /* Rounds the corners slightly */
+    transition: background-color 0.3s ease, color 0.3s ease;  /* Smooth transition when theme changes */
 }
 /* Responsive styles for smaller screens (e.g. mobile) */
 @media screen and (max-width: 480px) {
