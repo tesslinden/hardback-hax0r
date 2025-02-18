@@ -1,7 +1,6 @@
 import os
 import random
 import re
-import time
 from typing import Union
 
 from dotenv import load_dotenv
@@ -148,10 +147,6 @@ def search():
     filtered_words = [
         word for word in filtered_words if all(word.count(letter) >= count for letter, count in letter_counts.items())
     ]
-
-    # TODO: remove
-    # wait 5 seconds (using this to develop frontend loading spinner)
-    time.sleep(5)
 
     return jsonify({"result": filtered_words})
 
