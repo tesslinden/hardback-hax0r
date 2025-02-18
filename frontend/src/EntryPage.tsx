@@ -8,7 +8,7 @@ const EntryPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-4xl mb-8">Welcome to Hardback Hacker</h1>
       <button className="button" onClick={() => navigate("/main")}>
-        Enter
+        Let's hack
       </button>
     </div>
   );
