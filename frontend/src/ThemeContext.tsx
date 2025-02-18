@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedTheme = localStorage.getItem("theme");
     return savedTheme === "dark" || savedTheme === "light"
       ? savedTheme
-      : "light";
+      : "dark";
   });
 
   // Effect to update document root class and localStorage when theme changes
