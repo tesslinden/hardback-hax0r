@@ -32,11 +32,13 @@ const MainPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [queryDisplay, setQueryDisplay] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
+
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
+
   const [errorMessageDuplicateLetters, setErrorMessageDuplicateLetters] =
     useState<string>("");
   const [errorMessageInvalidLetters, setErrorMessageInvalidLetters] =
@@ -132,7 +134,7 @@ const MainPage: React.FC = () => {
         alert("Received error from server. See console.");
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoading(false); // will run after either .then or .catch completes
       });
   };
 
