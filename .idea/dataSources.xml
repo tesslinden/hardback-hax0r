@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:postgresql://localhost:5433/hh-db-local</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="hardbackhacker_db@dpg-ctpglei3esus73dhqul0-a.oregon-postgres.render.com" uuid="497649d4-fea7-48c7-8f46-51227f50ff02">
+    <data-source source="LOCAL" name="neondb@ep-yellow-bush-a4xl6aa7-pooler.us-east-1.aws.neon.tech" uuid="8c2772ad-42d8-4ad4-8236-c17f902ab77d">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://dpg-ctpglei3esus73dhqul0-a.oregon-postgres.render.com/hardbackhacker_db</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ep-yellow-bush-a4xl6aa7-pooler.us-east-1.aws.neon.tech/neondb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

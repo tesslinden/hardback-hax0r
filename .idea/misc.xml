@@ -4,5 +4,5 @@
     <option name="pathToExecutable" value="$USER_HOME$/.pyenv/shims/black" />
     <option name="sdkName" value="Python 3.9 virtualenv at ~/projects/hardback-hax0r/hh-env" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 virtualenv at ~/projects/hardback-hax0r/hh-env" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (hardback-hax0r)" project-jdk-type="Python SDK" />
 </project>
