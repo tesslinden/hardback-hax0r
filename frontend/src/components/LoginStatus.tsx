@@ -35,7 +35,7 @@ const LoginStatus: React.FC = () => {
       {isAuthenticated ? (
         <div>
           <div className="login-status">Welcome, {userFirstName}</div>
-          <button onClick={logout} className="logout-button">
+          <button onClick={logout} className="button logout-button">
             Log out
           </button>
         </div>
