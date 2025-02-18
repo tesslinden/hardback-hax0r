@@ -3,6 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import config from "./config";
+import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 
 const MainPage: React.FC = () => {
   // ^ React.FC is a type (React Functional Component).
@@ -28,13 +29,16 @@ const MainPage: React.FC = () => {
   };
 
   const [serverResponse, setServerResponse] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
   const [queryDisplay, setQueryDisplay] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
+
   const [minLength, setMinLength] = useState<number | null>(null);
   const [maxLength, setMaxLength] = useState<number | null>(null);
   const [letterCounts, setLetterCounts] = useState<
     { guid: string; letter: string; count: number | null }[]
   >([makeRandomLetterCount([])]);
+
   const [errorMessageDuplicateLetters, setErrorMessageDuplicateLetters] =
     useState<string>("");
   const [errorMessageInvalidLetters, setErrorMessageInvalidLetters] =
@@ -112,6 +116,10 @@ const MainPage: React.FC = () => {
   };
 
   const handleSearch = () => {
+    setSearchResults(null);
+    setIsLoading(true);
+    setQueryDisplay(makeQueryDisplay());
+
     axios
       .post(`${config.apiUrl}/search`, {
         min_length: minLength,
@@ -120,11 +128,13 @@ const MainPage: React.FC = () => {
       }) // send a POST request to the server (backend)
       .then((response) => {
         setSearchResults(response.data.result);
-        setQueryDisplay(makeQueryDisplay());
       })
       .catch((error) => {
         console.error("Received error from server:", error);
         alert("Received error from server. See console.");
+      })
+      .finally(() => {
+        setIsLoading(false); // will run after either .then or .catch completes
       });
   };
 
@@ -227,16 +237,18 @@ const MainPage: React.FC = () => {
         <button
           onClick={handleSearch}
           className="button searchbutton"
-          disabled={duplicateLettersFound || invalidLettersFound}
+          disabled={duplicateLettersFound || invalidLettersFound || isLoading}
         >
           Search
         </button>
+        <p>
+          {queryDisplay && <b>Query: </b>}
+          {queryDisplay}
+        </p>
+        {isLoading && <LoadingSpinner />}
       </div>
       {searchResults !== null && (
         <div>
-          <p>
-            <b>Query:</b> {queryDisplay}
-          </p>
           <p>
             <b>Results: </b>
             {
