@@ -1,10 +1,10 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useAuth } from "../AuthContext"; // Note the updated import path
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-import config from "../config"; // Note the updated import path
+import config from "../config";
 
 const LoginStatus: React.FC = () => {
-  const { isAuthenticated, user, login, logout } = useAuth(); // Added login to destructuring
+  const { isAuthenticated, user, login, logout } = useAuth();
   const navigate = useNavigate();
 
   async function handleGoogleLoginSuccess(credentialResponse: any) {
