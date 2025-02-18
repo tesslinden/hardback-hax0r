@@ -125,7 +125,7 @@ const MainPage: React.FC = () => {
         min_length: minLength,
         max_length: maxLength,
         letter_counts: filteredLetterCounts,
-      })
+      }) // send a POST request to the server (backend)
       .then((response) => {
         setSearchResults(response.data.result);
       })
