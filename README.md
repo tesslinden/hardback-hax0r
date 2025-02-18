@@ -62,8 +62,7 @@ Alternatively, in PyCharm, run the HH configuration to start the backend and fro
 
 ## TODO
 Major:
-* Handle loading state: show buffering animation, and don't show login button until Render completes build 
-   (otherwise it can look like website and login are broken)
+* Don't show option to log in until server has responded (may require server-responding context)
 * Store user search history and allow them to browse it
   * Allow user to star favorite searches 
 * Convert words.txt to SQL database and query it
