@@ -160,112 +160,125 @@ const MainPage: React.FC = () => {
   return (
     <div className="flex justify-between items-center mb-4">
       <h1>Hardback Hacker</h1>
-      <p>{initialServerResponse}</p>
-      <div>
-        <h4>Letters to include and their minimum counts:</h4>
-        {errorMessageDuplicateLetters && (
-          <p style={{ color: "red", fontSize: 12 }}>
-            {errorMessageDuplicateLetters}
-          </p>
-        )}
-        {errorMessageInvalidLetters && (
-          <p style={{ color: "red", fontSize: 12 }}>
-            {errorMessageInvalidLetters}
-          </p>
-        )}
-        {letterCounts.map((lc) => (
-          <div key={lc.guid} className="letter-input-container">
-            <input
-              className="textbox"
-              type="text"
-              value={lc.letter}
-              onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
-              placeholder="Letter"
-            />
+      {!initialServerResponse ? (
+        <>
+          <p>Awaiting server response...</p>
+          <LoadingSpinner />
+        </>
+      ) : (
+        <>
+          <p>{initialServerResponse}</p>
+          <div>
+            <h4>Letters to include and their minimum counts:</h4>
+            {errorMessageDuplicateLetters && (
+              <p style={{ color: "red", fontSize: 12 }}>
+                {errorMessageDuplicateLetters}
+              </p>
+            )}
+            {errorMessageInvalidLetters && (
+              <p style={{ color: "red", fontSize: 12 }}>
+                {errorMessageInvalidLetters}
+              </p>
+            )}
+            {letterCounts.map((lc) => (
+              <div key={lc.guid} className="letter-input-container">
+                <input
+                  className="textbox"
+                  type="text"
+                  value={lc.letter}
+                  onChange={(e) => handleLetterChange(lc.guid, e.target.value)}
+                  placeholder="Letter"
+                />
+                <input
+                  className="textbox"
+                  type="number"
+                  value={lc.count ?? ""}
+                  onChange={(e) => handleCountChange(lc.guid, e.target.value)}
+                  placeholder="Number"
+                />
+                {letterCounts.length > 1 && (
+                  <button
+                    onClick={() => handleRemoveLetter(lc.guid)}
+                    className="button"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            <div>
+              <button
+                onClick={handleAddLetter}
+                className="button"
+                disabled={reachedMaxLetters}
+              >
+                Add letter
+              </button>
+              {reachedMaxLetters && (
+                <span style={{ color: "gray", fontSize: 12, marginLeft: 8 }}>
+                  {`You have reached the maximum allowed number of letters (${maxLetters}).`}
+                </span>
+              )}
+            </div>
+          </div>
+          <div>
+            <h4>Min word length:</h4>
             <input
               className="textbox"
               type="number"
-              value={lc.count ?? ""}
-              onChange={(e) => handleCountChange(lc.guid, e.target.value)}
+              value={minLength ?? ""}
+              // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
+              onChange={handleMinLengthChange}
               placeholder="Number"
             />
-            {letterCounts.length > 1 && (
-              <button
-                onClick={() => handleRemoveLetter(lc.guid)}
-                className="button"
-              >
-                Remove
-              </button>
-            )}
           </div>
-        ))}
-        <div>
-          <button
-            onClick={handleAddLetter}
-            className="button"
-            disabled={reachedMaxLetters}
-          >
-            Add letter
-          </button>
-          {reachedMaxLetters && (
-            <span style={{ color: "gray", fontSize: 12, marginLeft: 8 }}>
-              {`You have reached the maximum allowed number of letters (${maxLetters}).`}
-            </span>
-          )}
-        </div>
-      </div>
-      <div>
-        <h4>Min word length:</h4>
-        <input
-          className="textbox"
-          type="number"
-          value={minLength ?? ""}
-          // ^ value to display. must be a string, can't be null. So if it's null, convert to an empty string.
-          onChange={handleMinLengthChange}
-          placeholder="Number"
-        />
-      </div>
-      <div>
-        <h4>Max word length:</h4>
-        <input
-          className="textbox"
-          type="number"
-          value={maxLength ?? ""}
-          onChange={handleMaxLengthChange}
-          placeholder="Number"
-        />
-      </div>
-      <div>
-        <button
-          onClick={handleSearch}
-          className="button searchbutton"
-          disabled={
-            duplicateLettersFound || invalidLettersFound || loadingSearchResults
-          }
-        >
-          Search
-        </button>
-        <p>
-          {queryDisplay && <b>Query: </b>}
-          {queryDisplay}
-        </p>
-        {loadingSearchResults && <LoadingSpinner />}
-      </div>
-      {searchResults !== null && (
-        <div>
-          <p>
-            <b>Results: </b>
-            {
-              searchResults.length.toLocaleString() // toLocaleString() adds commas: 25,005 instead of 25005
-            }
-          </p>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            {searchResults.length > 0 && <b>Matching words: </b>}
+          <div>
+            <h4>Max word length:</h4>
+            <input
+              className="textbox"
+              type="number"
+              value={maxLength ?? ""}
+              onChange={handleMaxLengthChange}
+              placeholder="Number"
+            />
+          </div>
+          <div>
+            <button
+              onClick={handleSearch}
+              className="button searchbutton"
+              disabled={
+                duplicateLettersFound ||
+                invalidLettersFound ||
+                loadingSearchResults
+              }
+            >
+              Search
+            </button>
             <p>
-              {searchResults?.map((word, index) => <li key={index}>{word}</li>)}
+              {queryDisplay && <b>Query: </b>}
+              {queryDisplay}
             </p>
-          </ul>
-        </div>
+            {loadingSearchResults && <LoadingSpinner />}
+          </div>
+          {searchResults !== null && (
+            <div>
+              <p>
+                <b>Results: </b>
+                {
+                  searchResults.length.toLocaleString() // toLocaleString() adds commas: 25,005 instead of 25005
+                }
+              </p>
+              <ul style={{ listStyleType: "none", padding: 0 }}>
+                {searchResults.length > 0 && <b>Matching words: </b>}
+                <p>
+                  {searchResults?.map((word, index) => (
+                    <li key={index}>{word}</li>
+                  ))}
+                </p>
+              </ul>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
