@@ -5,7 +5,7 @@ import EntryPage from "./EntryPage";
 import config from "./config";
 import { AuthProvider } from "./AuthContext";
 import { ThemeProvider } from "./ThemeContext";
-import { Layout } from "lucide-react";
+import Layout from "./components/Layout";
 
 const App: React.FC = () => {
   useEffect(() => {
