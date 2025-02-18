@@ -3,7 +3,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import config from "./config";
-import LoadingSpinner from "./components/LoadingSpinner";
+import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 
 const MainPage: React.FC = () => {
   // ^ React.FC is a type (React Functional Component).

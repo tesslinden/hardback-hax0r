@@ -1,0 +1,26 @@
+.spinner-container {
+  display: flex;
+  justify-content: flex-start; /* align left */
+  margin-top: 16px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f3f3; /* Light grey border */
+  border-top: 3px solid #3498db; /* Blue border on top */
+  border-radius: 50%; /* Makes it circular */
+  animation: spin 1s linear infinite;
+}
+
+/* Define the spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Dark theme support */
+:root[class~="dark"] .spinner {
+  border: 3px solid #333; /* Darker border for dark mode */
+  border-top: 3px solid #3498db; /* Keep blue border on top */
+}
