@@ -147,7 +147,6 @@ def search():
     filtered_words = [
         word for word in filtered_words if all(word.count(letter) >= count for letter, count in letter_counts.items())
     ]
-
     return jsonify({"result": filtered_words})
 
 
