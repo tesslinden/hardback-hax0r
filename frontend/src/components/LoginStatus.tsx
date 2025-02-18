@@ -28,11 +28,13 @@ const LoginStatus: React.FC = () => {
     }
   }
 
+  const userFirstName = user?.name.split(" ")[0];
+
   return (
-    <div className="login-status-container">
+    <div>
       {isAuthenticated ? (
         <div>
-          <div className="login-status">Welcome, {user?.name}</div>
+          <div className="login-status">Welcome, {userFirstName}</div>
           <button onClick={logout} className="logout-button">
             Log out
           </button>

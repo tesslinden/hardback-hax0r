@@ -9,14 +9,11 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
-      {/* Fixed position header for login and theme toggle */}
-      <div className="fixed top-0 right-0 p-4 flex gap-4 items-center z-50">
+      <div className="top-right-corner-container">
         <LoginStatus />
         <ThemeToggle />
       </div>
-
-      {/* Main content with padding to account for fixed header */}
-      <div className="pt-16">{children}</div>
+      <div>{children}</div>
     </div>
   );
 };
