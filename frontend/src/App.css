@@ -73,6 +73,9 @@ body {
 }
 
 /* Main page elements */
+.main-content {
+    padding-right: 100px;
+}
 .searchbutton {
     margin-top: 20px;
 }

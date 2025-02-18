@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <LoginStatus />
         <ThemeToggle />
       </div>
-      <div>{children}</div>
+      <div className="main-content">{children}</div>
     </div>
   );
 };
