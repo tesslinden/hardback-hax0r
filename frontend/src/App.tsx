@@ -4,6 +4,7 @@ import MainPage from "./MainPage"; // We'll create this from your existing App c
 import EntryPage from "./EntryPage";
 import config from "./config";
 import { AuthProvider } from "./AuthContext";
+import { ThemeProvider } from "./ThemeContext";
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -12,13 +13,15 @@ const App: React.FC = () => {
 
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<EntryPage />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<EntryPage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   );
 };

@@ -26,6 +26,30 @@ body {
 }
 
 
+/* Light and dark mode styles */
+
+:root {
+    /* Light theme variables */
+    --background: #ffffff;
+    --text: #1a1a1a;
+    --border: #e5e7eb;
+}
+
+:root[class~="dark"] {
+    /* Dark theme variables */
+    --background: #1a1a1a;
+    --text: #ffffff;
+    --border: #374151;
+}
+
+body {
+    padding-left: 20px;
+    background-color: var(--background);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
 /* Login status styles */
 
 .login-status-container {
