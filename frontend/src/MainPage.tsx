@@ -3,8 +3,6 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import config from "./config";
-import LoginStatus from "./components/LoginStatus";
-import ThemeToggle from "./components/ThemeToggle";
 
 const MainPage: React.FC = () => {
   // ^ React.FC is a type (React Functional Component).
@@ -108,11 +106,9 @@ const MainPage: React.FC = () => {
   const handleMinLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMinLength(parseInt(e.target.value) || null);
     // ^ setMinLength expects a number or null, so we convert the string to a number, or null if empty (I think).
-    console.log("Min length:", e.target.value);
   };
   const handleMaxLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMaxLength(parseInt(e.target.value) || null);
-    console.log("Max length:", e.target.value);
   };
 
   const handleSearch = () => {
@@ -149,13 +145,8 @@ const MainPage: React.FC = () => {
     return query;
   };
 
-  console.log("letterCounts: ", letterCounts);
-  console.log("invalidLettersFound: ", invalidLettersFound);
-
   return (
     <div className="flex justify-between items-center mb-4">
-      <LoginStatus />
-      <ThemeToggle />
       <h1>Hardback Hacker</h1>
       <p>{serverResponse}</p>
       <div>

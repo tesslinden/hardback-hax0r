@@ -1,77 +1,65 @@
-body {
-    padding-left: 20px; /* Add some padding to the left side of the webpage */
-}
-
-.button {
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
-.searchbutton {
-    margin-top: 20px;
-}
-
-.letter-input-container {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    margin-bottom: 8px;
-}
-
-.textbox {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-right: 16px;
-    width: 100px; /* Set the width of the textbox */
-}
-
-
-/* Light and dark mode styles */
-
 :root {
     /* Light theme variables */
     --background: #ffffff;
     --text: #1a1a1a;
     --border: #e5e7eb;
 }
-
 :root[class~="dark"] {
     /* Dark theme variables */
     --background: #1a1a1a;
     --text: #ffffff;
     --border: #374151;
 }
-
 body {
-    padding-left: 20px;
+    padding-left: 20px; /* Add some padding to the left side of the webpage */
     background-color: var(--background);
     color: var(--text);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-
-/* Login status styles */
-
-.login-status-container {
-    margin-top: 8px;
-    width: 150px;  /* Fixed width for the container */
-    margin-left: auto;  /* These two margin properties will right-align the container */
-    margin-right: 20px;
+/* Top right corner elements */
+.top-right-corner-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
 }
-
 .login-status {
     font-size: 13px;  /* Smaller font size for welcome text */
-    text-align: right;
 }
-
 .logout-button {
     font-size: 11px;
     margin-top: 8px;
+    margin-bottom: 8px;
+    display: block; /* Makes the button behave like a block element, taking up its own line */
+    margin-left: auto; /* In combination with display: block, this right-aligns the button */
+}
+.theme-toggle-button{
+    margin-top: 16px;
+    margin-bottom: 8px;
     display: block; /* Makes the button behave like a block element, taking up its own line */
     margin-left: auto; /* In combination with display: block, this right-aligns the button */
 }
 
-
+/* Main page elements */
+.button {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.searchbutton {
+    margin-top: 20px;
+}
+.letter-input-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.textbox {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    width: 100px; /* Set the width of the textbox */
+}
 /* Responsive styles for smaller screens (e.g. mobile) */
 @media screen and (max-width: 480px) {
     .textbox {
