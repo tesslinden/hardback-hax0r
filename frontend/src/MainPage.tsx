@@ -32,7 +32,7 @@ const MainPage: React.FC = () => {
     useState<string>("");
 
   const [queryDisplay, setQueryDisplay] = useState<string>("");
-  const [loadingResults, setLoadingResults] = useState(false);
+  const [loadingSearchResults, setLoadingSearchResults] = useState(false);
   const [searchResults, setSearchResults] = useState<string[] | null>(null);
 
   const [minLength, setMinLength] = useState<number | null>(null);
@@ -119,7 +119,7 @@ const MainPage: React.FC = () => {
 
   const handleSearch = () => {
     setSearchResults(null);
-    setLoadingResults(true);
+    setLoadingSearchResults(true);
     setQueryDisplay(makeQueryDisplay());
 
     axios
@@ -136,7 +136,7 @@ const MainPage: React.FC = () => {
         alert("Received error from server. See console.");
       })
       .finally(() => {
-        setLoadingResults(false); // will run after either .then or .catch completes
+        setLoadingSearchResults(false); // will run after either .then or .catch completes
       });
   };
 
@@ -240,7 +240,7 @@ const MainPage: React.FC = () => {
           onClick={handleSearch}
           className="button searchbutton"
           disabled={
-            duplicateLettersFound || invalidLettersFound || loadingResults
+            duplicateLettersFound || invalidLettersFound || loadingSearchResults
           }
         >
           Search
@@ -249,7 +249,7 @@ const MainPage: React.FC = () => {
           {queryDisplay && <b>Query: </b>}
           {queryDisplay}
         </p>
-        {loadingResults && <LoadingSpinner />}
+        {loadingSearchResults && <LoadingSpinner />}
       </div>
       {searchResults !== null && (
         <div>
