@@ -116,6 +116,7 @@ const MainPage: React.FC = () => {
   const handleSearch = () => {
     setSearchResults(null);
     setIsLoading(true);
+    setQueryDisplay(makeQueryDisplay());
 
     axios
       .post(`${config.apiUrl}/search`, {
@@ -125,7 +126,6 @@ const MainPage: React.FC = () => {
       })
       .then((response) => {
         setSearchResults(response.data.result);
-        setQueryDisplay(makeQueryDisplay());
       })
       .catch((error) => {
         console.error("Received error from server:", error);
@@ -239,13 +239,14 @@ const MainPage: React.FC = () => {
         >
           Search
         </button>
+        <p>
+          {queryDisplay && <b>Query: </b>}
+          {queryDisplay}
+        </p>
         {isLoading && <LoadingSpinner />}
       </div>
       {searchResults !== null && (
         <div>
-          <p>
-            <b>Query:</b> {queryDisplay}
-          </p>
           <p>
             <b>Results: </b>
             {
