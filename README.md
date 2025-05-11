@@ -74,7 +74,8 @@ Minor:
 * Split webpage into 3 columns: letter counts; min length and max length inputs; search results
 * Add button to clear all inputs, and ask user to confirm
 * Add button to download results as text file or copy to clipboard
-
+* Fix bug where you can put in a negative number for min/max length and if you hit search the page crashes
+   
 Workflow:
 * Add tests
 * Add CI/CD, maybe using AWS CodeBuild
